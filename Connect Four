@@ -1,0 +1,180 @@
+def createBoard(r , c):
+    if 'n' == input('Standard game? (y/n): '):
+        r, c = int(input('r? (2 - 20): ')), int(input('c? (2 - 20): '))
+    return [['·'] * c for i in range(r)]
+
+def printBoard(board):
+
+    r, c = len(board), len(board[0])
+    spaces = 1
+    if r>9 or c>9: spaces = 2 #bigBoard
+    x = ''
+    for row in range(r-1,-1, -1):
+        x += f'{row:>{spaces}}'
+        ss = ' '
+        if spaces==2: ss = '  '
+        for col in range(c):
+            x += ss+board[row][col]
+        x += ' \n'
+    x += ' ' + ' '*spaces
+    for col in range(c): x += f'{col:>{spaces}}'+' '
+    print(x)
+
+def makeMove(board, player, col):
+    r = len(board)
+    for row in range(r):
+        if board[row][col]!='·' and board[row+1][col]=='·':
+            board[row+1][col] = player
+            break
+        elif board[row][col]=='·':
+            board[row][col] = player
+            break
+
+def check(r, c):
+    countx = 0
+    counto = 0
+    if player == "X":
+        for i in board:
+            for ii in range (len(i)): 
+                if ii == "X":
+                    countx += 1
+                elif ii != "X":
+                    countx = 0
+                if countx == 4:
+                    print ('Player X has won!')
+                    print('bye')
+                    exit()
+            countx = 0
+
+        for i in range (c):
+            for ii in range (r):
+                if board[ii][i] == "X":
+                    countx += 1
+                elif board[ii][i] != "X":
+                    countx = 0
+                if countx == 4:
+                    print ('Player X has won!')
+                    print('bye')
+                    exit()
+            countx = 0
+ 
+        for i in range(c-3):
+            for ii in range(r-1, 0, -1):
+                tmp=i
+                while ii > -1 and i != c:
+                    if board[ii][i] == "X":
+                        countx += 1
+                    elif board[ii][i] != "X":
+                        countx = 0
+                    if countx == 4:
+                        print ('Player X has won!')
+                        print('bye')
+                        exit()
+                    i += 1
+                    ii -= 1
+                countx = 0
+                i=tmp
+                
+        for i in range (r):
+            for ii in range (c-3):
+                tmp=i
+                while ii != c and i != r:
+                    if board[i][ii] == "X":
+                        countx += 1
+                    elif board[i][ii] != "X":
+                        countx = 0
+                    if countx == 4:
+                        print ('Player X has won!')
+                        print('bye')
+                        exit()
+                    i += 1
+                    ii += 1
+                countx = 0
+                i=tmp
+
+
+    if player == "O":
+        for i in board:
+            for ii in range (len(i)):
+                if ii == "O":
+                    counto += 1
+                elif ii != "O":
+                    counto = 0
+                if counto == 4:
+                    print ('Player O has won!')
+                    print('bye')
+                    exit()
+            counto = 0
+
+        for i in range (c):
+            for ii in range (r):
+                if board[ii][i] == "O":
+                    counto += 1
+                elif board[ii][i] != "O":
+                    counto = 0
+                if counto == 4:
+                    print ('Player O has won!')
+                    print('bye')
+                    exit()
+            counto = 0
+
+        for i in range(c-3):
+            for ii in range(r-1, 0, -1):
+                tmp = i
+                while ii > -1 and i != c:
+                    if board[ii][i] == "O":
+                        counto += 1
+                    elif board[ii][i] != "O":
+                        counto = 0
+                    if counto == 4:
+                        print ('Player O has won!')
+                        print('bye')
+                        exit()
+                    i += 1
+                    ii -= 1
+                counto = 0
+                i = tmp
+
+        for i in range (r):
+            for ii in range (c-3):
+                tmp=i
+                while ii != c and i != r:
+                    if board[i][ii] == "O":
+                        counto += 1
+                    elif board[i][ii] != "O":
+                        counto = 0
+                    if counto == 4:
+                        print ('Player O has won!')
+                        print('bye')
+                        exit()
+                    i += 1
+                    ii += 1
+                counto = 0
+                i=tmp
+               
+r, c = 6, 7           
+board = createBoard(r , c)
+printBoard(board)
+player = 'X'
+moves = 0
+while True:
+    r = len(board)
+    c = len(board[0])
+    move = input( 'player'+player+' (col #): ')
+    if move == 'e': 
+        break
+    if board[r-1][int(move)] != "·":
+        printBoard(board)
+        continue
+    moves += 1
+    makeMove(board, player, int(move))
+    printBoard(board)
+    check(r, c)
+    if moves == r*c:
+        print("Draw!")
+        break
+    if player == 'X': 
+        player = 'O'
+    else: 
+        player = 'X'
+print('bye')
